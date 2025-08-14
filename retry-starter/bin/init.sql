@@ -1,0 +1,30 @@
+
+create table RETRYLOG
+(
+    id              NUMBER(19) not null,
+    digest          NVARCHAR2(200),
+    sourcetype      NVARCHAR2(50),
+    sourceid        NVARCHAR2(50),
+    url             NVARCHAR2(1000),
+    category        NVARCHAR2(50),
+    newinstancename NVARCHAR2(300),
+    classname       NVARCHAR2(300),
+    methodname      NVARCHAR2(200),
+    paramvalues     CLOB,
+    retrycount      NUMBER(10),
+    maxretrycount   NUMBER(10),
+    responsemsg     NVARCHAR2(2000),
+    errorcode       NVARCHAR2(200),
+    errormsg        NVARCHAR2(200),
+    currentdate     DATE,
+    retryexpirydate DATE,
+    status          NUMBER(10),
+    description     NVARCHAR2(1000),
+    sortcode        NUMBER(10) default 0,
+    enabled         NUMBER(10) default 1,
+    createorgid     NUMBER(19),
+    createon        DATE,
+    createuser      NUMBER(19),
+    modifiedon      DATE,
+    modifieduser    NUMBER(19)
+)
