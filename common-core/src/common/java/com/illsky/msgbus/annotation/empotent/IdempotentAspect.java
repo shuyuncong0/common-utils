@@ -1,7 +1,6 @@
 package com.illsky.msgbus.annotation.empotent;
 
 import cn.hutool.core.util.StrUtil;
-import com.cosmo.emes.common.model.exceptions.LccxException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -46,7 +45,7 @@ public class IdempotentAspect implements Ordered {
     private final DefaultParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 
     // 切入点
-    @Pointcut(value = "@annotation(com.cosmo.emes.common.tool.infra.Idempotent)")
+    @Pointcut(value = "@annotation(com.illsky.msgbus.annotation.empotent.Idempotent)")
     public void executeIdempotent() {
     }
 
@@ -83,7 +82,7 @@ public class IdempotentAspect implements Ordered {
             throw new LccxException("系统正在处理，请稍后再试");
         }*/
         if(Boolean.FALSE.equals(acquire)) {
-            throw new LccxException("系统正在处理，请稍后再试");
+            throw new RuntimeException("系统正在处理，请稍后再试");
         }
         try {
             return joinPoint.proceed();
@@ -127,7 +126,7 @@ public class IdempotentAspect implements Ordered {
             cacheKey = String.format("%s:%s:%s", simpleClassName, methodName, hashArgs(joinPoint.getArgs()));
         } else if (isSpEl(key)) {
             // 如果未明确指定，自动判断：以 '#' 开头的视为 SpEL 表达式
-            cacheKey = String.format("%s:%s:%s", simpleClassName, methodName, parseSpEL(key, joinPoint.getArgs(), method));
+            cacheKey = String.format("%s:%s:%s", simpleClassName, methodName, parseSpEl(key, joinPoint.getArgs(), method));
         } else {
             // 如果明确指定，则使用指定的 key
             cacheKey = String.format("%s:%s:%s", simpleClassName, key, hashArgs(joinPoint.getArgs()));
@@ -138,7 +137,7 @@ public class IdempotentAspect implements Ordered {
     /**
      * 解析 SpEL 表达式
      */
-    private String parseSpEL(String expression, Object[] args, Method method) {
+    private String parseSpEl(String expression, Object[] args, Method method) {
         if (expression == null || expression.isEmpty()) {
             // 默认方法名作为 Key
             return method.getName();
