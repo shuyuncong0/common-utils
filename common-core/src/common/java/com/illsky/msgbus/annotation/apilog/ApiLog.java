@@ -22,12 +22,17 @@ public @interface ApiLog {
     /**
      * 来源系统
      */
-    String sourceSystem() default "ERP";
+    String sourceSystem() default "";
 
     /**
-     * 请求唯一标识
+     * 请求唯一标识, 支持SpEL表达式
      */
     String requestId() default "";
+
+    /**
+     * 业务类型，取代通过方法名猜测的方式
+     */
+    BusinessType businessType() default BusinessType.OTHER;
 
     /**
      * 自定义日志级别
@@ -41,4 +46,15 @@ public @interface ApiLog {
         DEBUG, INFO, WARN, ERROR
     }
 
+    /**
+     * 业务类型枚举
+     */
+    enum BusinessType {
+        CREATE,
+        UPDATE,
+        DELETE,
+        QUERY,
+        LOGIN,
+        OTHER
+    }
 }
