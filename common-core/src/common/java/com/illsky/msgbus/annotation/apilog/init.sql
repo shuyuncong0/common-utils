@@ -1,0 +1,20 @@
+CREATE TABLE t_api_log (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键ID',
+    source_system VARCHAR(64) DEFAULT NULL COMMENT '来源系统',
+    trace_id VARCHAR(64) DEFAULT NULL COMMENT '调用链ID/唯一追踪ID',
+    business_type VARCHAR(50) NOT NULL COMMENT '业务类型',
+    request_id VARCHAR(64) DEFAULT NULL COMMENT '请求唯一标识（可和调用方对应）',
+    class_name VARCHAR(255) NOT NULL COMMENT '类名',
+    method_name VARCHAR(255) NOT NULL COMMENT '方法名',
+    operation VARCHAR(255) DEFAULT NULL COMMENT '操作描述（注解value）',
+    request_uri VARCHAR(255) DEFAULT NULL COMMENT '请求URI',
+    http_method VARCHAR(20) DEFAULT NULL COMMENT 'HTTP方法',
+    client_ip VARCHAR(64) DEFAULT NULL COMMENT '请求来源IP',
+    request_params TEXT COMMENT '请求参数(JSON)',
+    request_body TEXT COMMENT '请求体(JSON)',
+    response_body TEXT COMMENT '响应体(JSON)',
+    success TINYINT(1) DEFAULT 1 COMMENT '是否成功 1=成功 0=失败',
+    error_message TEXT COMMENT '异常信息',
+    execution_time BIGINT COMMENT '执行时间(毫秒)',
+    create_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间'
+) COMMENT='接口调用日志表';

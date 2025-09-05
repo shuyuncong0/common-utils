@@ -1,17 +1,44 @@
 package com.illsky.msgbus.annotation.apilog;
 
+import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author: sucongcong
- * @date: 2023/2/3
- * @descripyion: 记录接口日志
- * @modify:
+ * 自定义API日志记录注解
+ * @author sucongcong
  */
-@Target(ElementType.METHOD)
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
+@Documented
 public @interface ApiLog {
+    /**
+     * 接口功能描述
+     */
+    String description() default "";
+
+    /**
+     * 来源系统
+     */
+    String sourceSystem() default "ERP";
+
+    /**
+     * 请求唯一标识
+     */
+    String requestId() default "";
+
+    /**
+     * 自定义日志级别
+     */
+    LogLevel level() default LogLevel.INFO;
+
+    /**
+     * 日志级别枚举
+     */
+    enum LogLevel {
+        DEBUG, INFO, WARN, ERROR
+    }
+
 }
